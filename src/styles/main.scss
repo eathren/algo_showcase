@@ -1,17 +1,12 @@
-.line{
-    color: red;
-    border: 1px solid red;
-    height: 10px;
-    width: 10px;
-    background-color: red;
-    display: flex;
-    flex-direction: row;
-    margin-left: 2px;
-    margin-right: 2px;
+.line {
+  //   height: 10px;
+  width: 10px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
-.chart{
-display: flex;
-flex-direction: row;
-justify-content: start;
+.chart {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
 }
