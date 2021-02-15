@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import BubbleSort from "./sorts/BubbleSort";
 
 const styles = {
   color: "red",
@@ -6,8 +8,6 @@ const styles = {
   lineActiveFalse: "blue",
 };
 
-const n = 10;
-const setup = [10, 20, 30, 40, 50];
 const setup_object = [
   { value: 10, color: "red" },
   { value: 20, color: "red" },
@@ -16,13 +16,66 @@ const setup_object = [
   { value: 50, color: "red" },
   { value: 60, color: "red" },
 ];
+
 const speed = 1;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 function Chart(n) {
   // declares and changes number of lines
   const [amount, setAmount] = useState(10);
   const [place, setPlace] = useState(0);
-  shuffleArray(setup);
+  const [array, setArray] = useState(setup_object);
+  const [object, setObject] = useState(setup_object);
+
+  useEffect(() => {
+    const n = 10;
+
+    console.log("Setting n");
+    let temp_array = [];
+    for (let i = 1; i <= n; i++) {
+      temp_array.push({ value: i * 10, color: "red" });
+    }
+    console.log(temp_array);
+    return setArray(temp_array);
+  });
+
+  useEffect(() => {
+    console.log("shuffling");
+    shuffleArray(array);
+    return array;
+  });
+
+  function bubbleSort(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      setTimeout(1000);
+      console.log("Sort array", arr[i], arr[i].value);
+      for (let j = 0; j < arr.length; j++) {
+        if (arr[j] > arr[j + 1]) {
+          let temp = arr[j];
+          arr[j] = arr[j + 1];
+          arr[j + 1] = temp;
+        }
+      }
+    }
+    return arr;
+  }
+
+  // const bubbleSort = (arr) => {
+  //   for (let i = 0; i < arr.length; i++) {
+  //     setTimeout(1000);
+  //     for (let j = 0; j < arr.length; j++) {
+  //       if (arr[j] > arr[j + 1]) {
+  //         let temp = arr[j];
+  //         arr[j] = arr[j + 1];
+  //         arr[j + 1] = temp;
+  //       }
+  //     }
+  //   }
+  // };
+
   //   bubbleSort(setup);
   return (
     <>
@@ -31,11 +84,14 @@ function Chart(n) {
         {/* {setup.map((e, i) => (
           <Line value={setup[i]} color={"red"} key={i} />
         ))} */}
-        {setup_object.map((e, i) => (
-          <Line value={setup[i]} color={"red"} key={i} />
+        {console.log(array)}
+        {array.reverse().map((e, i) => (
+          <Line value={array[i]} color={"red"} key={i} />
         ))}
-        <button onClick={bubbleSort}> Sort </button>
       </div>
+      {/* <SortButton />1 */}
+      <button onClick={() => setArray(bubbleSort(array))}> Sort </button>
+      <button onClick={() => setArray(shuffleArray(array))}> Shuffle </button>
     </>
   );
 }
@@ -46,14 +102,15 @@ function Chart(n) {
 // n amount and input
 
 function Line(props) {
-  //   const length = value;
+  const height = props.value.value;
+  const color = props.color;
   return (
     <>
       <div
         style={{
-          height: props.value,
-          backgroundColor: props.color,
-          color: props.color,
+          height: height,
+          backgroundColor: color,
+          color: color,
         }}
         className="line"
       ></div>
@@ -68,31 +125,17 @@ function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
+    console.log("Shuffle array", arr[i].value);
   }
   return arr;
 }
 
-function SortButton(arr) {
+function SortButton(props) {
   return (
     <>
-      <button onClick={bubbleSort(arr)}> Sort </button>
-      {console.log("Test")}
+      <button onClick={BubbleSort(props)}> Sort Button </button>
     </>
   );
-}
-
-function bubbleSort(arr) {
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr.length; j++) {
-      if (arr[j] > arr[j + 1]) {
-        let temp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j + 1] = temp;
-      }
-    }
-  }
-  console.log("test");
-  return arr;
 }
 
 export default Chart;
