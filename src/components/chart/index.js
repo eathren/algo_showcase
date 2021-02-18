@@ -9,7 +9,7 @@ const styles = {
     lineActiveFalse: "blue",
 };
 
-const setup_object = [30, 20, 10, 50, 40, 80];
+const setup_object = [20, 60, 10, 40, 50, 70];
 
 // later used to set speed, not implemented yet.
 const speed = 1;
@@ -19,16 +19,20 @@ function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+
 function Chart(n) {
     // declares and changes number of lines
-    const [amount, setAmount] = useState(10);
+    // const [amount, setAmount] = useState(10);
     const [array, setArray] = useState(setup_object);
-    const [tempArray, setTempArray] = useState();
 
     useEffect(() => {
 
 
     }, []);
+
+    // this shuffled the array after setting array values based off of n
+
+    // removed while I troubleshoot. Plus it was shuffling every re-render.
 
     // useEffect(() => {
     //     const n = 10;
@@ -42,54 +46,49 @@ function Chart(n) {
     // }, []);
 
 
-    // function ShowChart() {
-    //     return (
-    //         <>
-    //             {console.log("What in tarnatoin", array)}
-    //             {array.map((e, i) => (
-    //                 <Line value={array[i]} color={"red"} key={i} />
-    //             ))}
-    //         </>
-    //     );
-    // }
 
 
-    // Kind of works, but runs all at once instead of showing steps. 
     function bubbleSort() {
-        console.log(array)
-        array.map(e1 => array.map((e2, i) => {
-            if (array[i] > array[i + 1]) { // comparing adjacent elements
-                [array[i], array[i + 1]] = [array[i + 1], array[i]]  // swapping
+        const arr = array
+        console.log("Pre-sort", arr)
+        arr.map(e1 => arr.map((e2, i) => {
+            if (arr[i] > arr[i + 1]) { // comparing adjacent elements
+                [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]]  // swapping
             }
         }))
-        setArray(array)
-        console.log(array)
+        console.log("Post sort", arr)
+
+        console.log(arr)
+        setArray([...arr])
+        return [...arr]
         // return setArray(array)
     }
 
     return (
         <>
-            Hello
             <div className="chart">
-                {array}
-                {console.log(array)}
                 {array.map((e, i) => (
                     <Line value={array[i]} color={"red"} key={i} />
                 ))}
             </div>
             <button onClick={() => bubbleSort()}> Sort </button>
-            {/* {bubbleSort()} */}
-            {/* <button onClick={() => setArray(bubbleSort(array))}> Sort </button> */}
-            {/* <button onClick={() => setArray(shuffleArray(array))}> Shuffle </button> */}
+            {array}
         </>
     );
 }
 
 
-// Lines
-// need value -> length
-// random order
-// n amount and input
+// function ShowChart() {
+//     return (
+//         <>
+//             {console.log("What in tarnatoin", array)}
+//             {array.map((e, i) => (
+//                 <Line value={array[i]} color={"red"} key={i} />
+//             ))}
+//         </>
+//     );
+// }
+
 
 function Line(props) {
     const height = props.value;
@@ -108,9 +107,6 @@ function Line(props) {
     );
 }
 
-// have a value for number of lines
-// have a value that changes css color sorting method
-
 function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -120,12 +116,5 @@ function shuffleArray(arr) {
     return arr;
 }
 
-function SortButton(props) {
-    return (
-        <>
-            <button onClick={BubbleSort(props)}> Sort Button </button>
-        </>
-    );
-}
 
 export default Chart;
