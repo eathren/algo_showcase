@@ -76,7 +76,6 @@ function Chart() {
         tempArray = shuffleArray(tempArray);
 
         setArray([...tempArray]);
-        console.log(tempArray)
     }, []);
 
     function sleep(speed) {
@@ -92,11 +91,11 @@ function Chart() {
 
     // handles slider setting column amount
     const handleSliderChangeColumns = (event, value) => {
-        console.log("here", columns, value);
         let tempArray = [];
         const n = value;
         for (let i = 1; i <= n; i++) {
-            tempArray.push(i * (200 / columns));
+            tempArray.push({ "value": (i * (200 / columns)), "color": 'red' });
+
         }
 
         tempArray = shuffleArray(tempArray);
@@ -107,22 +106,24 @@ function Chart() {
     const resetButton = () => {
         if (reset.length > 1) {
             setArray([...reset]);
+
         }
         else {
             setArray([...array])
         }
-        console.log("Reset", reset);
     };
 
 
 
     function arraySwap(arr, indexA, indexB) {
+        // arr[indexA].color = "blue"
+        // arr[indexB].color = "orange"
         let temp = array[indexA];
         array[indexA] = array[indexB];
         array[indexB] = temp;
         // [arr[indexA], arr[indexB]] = [arr[indexB], arr[indexA]];
-        // console.log(arr[indexA].value, arr[indexB].value)
         setArray([...arr]);
+
     }
 
     async function bubbleSort() {
@@ -134,22 +135,24 @@ function Chart() {
             for (let j = 0; j < len - 1; j++) {
 
                 if (arr[j].value > arr[j + 1].value) {
-                    // count++;
-                    // console.log(count, len)
-                    console.log(typeof arr[j + 1])
                     let indexA = j;
                     let indexB = j + 1;
-                    // active array
-                    arr[j].color = "blue"
-                    // comparing array
-                    arr[j + 1].color = "orange"
+                    arr[indexA].color = "orange"
+                    arr[indexB].color = "blue"
+
                     arraySwap(arr, indexA, indexB);
                     // arr[j].color = "red"
                     await sleep(speed);
                 }
+                arr[j].color = "red"
+                arr[j + 1].color = "red"
 
             }
+            // arr[i].color = "red"
+            // arr[i + 1].color = "red"
         }
+        setArray([...arr])
+
     }
 
     function stopAll() { }
