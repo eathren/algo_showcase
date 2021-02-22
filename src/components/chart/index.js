@@ -65,14 +65,6 @@ function Chart() {
   const [speed, setSpeed] = useState([1]);
   const [reset, setReset] = useState([]);
 
-  const handleSliderChange = (event, newValue) => {
-    setColumns(newValue);
-  };
-
-  const handleInputChange = (event) => {
-    setColumns(event.target.value === "" ? "" : Number(event.target.value));
-  };
-
   // sets up columns and shuffles them
   useEffect(() => {
     const n = columns;
@@ -86,6 +78,22 @@ function Chart() {
 
     setArray([...tempArray]);
   }, []);
+
+  const handleSliderChange = (event, value) => {
+    console.log("here", columns, value);
+    let tempArray = [];
+    const n = value;
+    for (let i = 1; i <= n; i++) {
+      tempArray.push(i * 10);
+    }
+    tempArray = shuffleArray(tempArray);
+    // deep copy in JS
+    // const resetArray = JSON.parse(JSON.stringify(tempArray));
+
+    setArray([...tempArray]);
+    setColumns(value);
+    console.log("here2", columns, value);
+  };
 
   const resetButton = () => {
     setArray(reset);
