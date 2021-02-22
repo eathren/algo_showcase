@@ -62,37 +62,45 @@ function Chart() {
   // const [amount, setAmount] = useState(10);
   const [array, setArray] = useState([]);
   const [columns, setColumns] = useState(20);
-  const [speed, setSpeed] = useState([1]);
+  const [speed, setSpeed] = useState(200);
   const [reset, setReset] = useState([]);
 
   // sets up columns and shuffles them
   useEffect(() => {
+    // sets up initial columns, shuffles them.
     const n = columns;
     let tempArray = [];
     for (let i = 1; i <= n; i++) {
-      tempArray.push(i * 10);
+      tempArray.push(i * (200 / columns));
     }
     tempArray = shuffleArray(tempArray);
-    // deep copy in JS
-    // const resetArray = JSON.parse(JSON.stringify(tempArray));
 
     setArray([...tempArray]);
   }, []);
 
-  const handleSliderChange = (event, value) => {
+  function sleep(speed) {
+    return new Promise(
+      (resolve) => setTimeout(resolve, 201 - speed)
+      // setTimeout(resolve, 1 / speed, console.log("here", 1 / speed))
+    );
+  }
+
+  const handleSliderChangeSpeed = (event, value) => {
+    setSpeed(value);
+    console.log(speed);
+  };
+
+  const handleSliderChangeColumns = (event, value) => {
     console.log("here", columns, value);
     let tempArray = [];
     const n = value;
     for (let i = 1; i <= n; i++) {
-      tempArray.push(i * 10);
+      tempArray.push(i * (200 / columns));
     }
-    tempArray = shuffleArray(tempArray);
-    // deep copy in JS
-    // const resetArray = JSON.parse(JSON.stringify(tempArray));
 
+    tempArray = shuffleArray(tempArray);
     setArray([...tempArray]);
     setColumns(value);
-    console.log("here2", columns, value);
   };
 
   const resetButton = () => {
@@ -113,9 +121,7 @@ function Chart() {
   //     tempArray = shuffleArray(tempArray);
   //     return setArray(tempArray);
   // }, []);
-  function sleep(milliseconds) {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  }
+
   function arraySwap(arr, indexA, indexB) {
     [arr[indexA], arr[indexB]] = [arr[indexB], arr[indexA]];
     setArray([...arr]);
@@ -135,12 +141,14 @@ function Chart() {
           let indexA = j;
           let indexB = j + 1;
           arraySwap(arr, indexA, indexB);
-          await sleep(5);
+          await sleep(speed);
         }
       }
     }
     // setArray([...arr]);
   }
+
+  function stopAll() {}
 
   return (
     <>
@@ -173,13 +181,27 @@ function Chart() {
           <div className={classes.sliderContainer}>
             <ColumnSlider
               value={columns}
-              onChange={handleSliderChange}
+              onChange={handleSliderChangeColumns}
               valueLabelDisplay="auto"
-              aria-label="pretto slider"
-              defaultValue={10}
+              aria-label="Column slider"
+              defaultValue={20}
               step={10}
               //   marks
               min={10}
+              max={150}
+            />
+            <Typography id="discrete-slider" gutterBottom>
+              Speed
+            </Typography>
+            <ColumnSlider
+              value={speed}
+              onChange={handleSliderChangeSpeed}
+              valueLabelDisplay="auto"
+              aria-label="speed slider"
+              defaultValue={100}
+              step={1}
+              //   marks
+              min={1}
               max={200}
             />
           </div>
