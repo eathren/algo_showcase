@@ -54,12 +54,10 @@ const ColumnSlider = withStyles({
     },
 })(Slider);
 
-// later used to set speed, not implemented yet.
 
 function Chart() {
     const classes = useStyles();
     // declares and changes number of lines
-    // const [amount, setAmount] = useState(10);
     const [array, setArray] = useState([]);
     const [columns, setColumns] = useState(20);
     const [speed, setSpeed] = useState(200);
@@ -71,25 +69,28 @@ function Chart() {
         const n = columns;
         let tempArray = [];
         for (let i = 1; i <= n; i++) {
-            tempArray.push(i * (200 / columns));
+            tempArray.push({ "value": (i * (200 / columns)), "color": 'red' });
+
+            // tempArray.push(i * (200 / columns));
         }
         tempArray = shuffleArray(tempArray);
 
         setArray([...tempArray]);
+        console.log(tempArray)
     }, []);
 
     function sleep(speed) {
         return new Promise(
             (resolve) => setTimeout(resolve, 201 - speed)
-            // setTimeout(resolve, 1 / speed, console.log("here", 1 / speed))
         );
     }
 
+    // handles setting the sort speed. Base is 200.
     const handleSliderChangeSpeed = (event, value) => {
         setSpeed(value);
-        console.log(speed);
     };
 
+    // handles slider setting column amount
     const handleSliderChangeColumns = (event, value) => {
         console.log("here", columns, value);
         let tempArray = [];
@@ -105,7 +106,6 @@ function Chart() {
 
     const resetButton = () => {
         if (reset.length > 1) {
-
             setArray([...reset]);
         }
         else {
@@ -114,44 +114,33 @@ function Chart() {
         console.log("Reset", reset);
     };
 
-    // this shuffled the array after setting array values based off of n
 
-    // removed while I troubleshoot. Plus it was shuffling every re-render.
-
-    // useEffect(() => {
-    //     const n = 10;
-    //     let tempArray = [];
-    //     for (let i = 1; i <= n; i++) {
-    //         tempArray.push(i * 10);
-    //     }
-    //     tempArray = shuffleArray(tempArray);
-    //     return setArray(tempArray);
-    // }, []);
 
     function arraySwap(arr, indexA, indexB) {
+
         [arr[indexA], arr[indexB]] = [arr[indexB], arr[indexA]];
+        // console.log(arr[indexA].value, arr[indexB].value)
         setArray([...arr]);
     }
 
-    //   let bubbleSort = () => {
     async function bubbleSort() {
         const arr = array;
         setReset([...arr]);
         let len = arr.length;
         for (let i = 0; i < len; i++) {
             for (let j = 0; j < len; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    //   let tmp = arr[j];
-                    //   arr[j] = arr[j + 1];
-                    //   arr[j + 1] = tmp;
-                    let indexA = j;
-                    let indexB = j + 1;
+                let indexA = j;
+                let indexB = j + 1;
+
+                if (arr[j].value >= arr[j + 1].value) {
+
+                    arr[j].color = "blue"
+                    arr[j + 1].color = "orange"
                     arraySwap(arr, indexA, indexB);
                     await sleep(speed);
                 }
             }
         }
-        // setArray([...arr]);
     }
 
     function stopAll() { }
@@ -164,13 +153,13 @@ function Chart() {
                         <div className="chart">
                             {array.map((e, i) => (
                                 <Line
-                                    value={array[i]}
+                                    value={array[i].value}
                                     className={""}
                                     isActive={false}
                                     isChecking={false}
                                     styles={styles}
                                     key={i}
-                                    color={"red"}
+                                    color={array[i].color}
                                 />
                             ))}
                         </div>
