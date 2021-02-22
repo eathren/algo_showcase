@@ -117,8 +117,10 @@ function Chart() {
 
 
     function arraySwap(arr, indexA, indexB) {
-
-        [arr[indexA], arr[indexB]] = [arr[indexB], arr[indexA]];
+        let temp = array[indexA];
+        array[indexA] = array[indexB];
+        array[indexB] = temp;
+        // [arr[indexA], arr[indexB]] = [arr[indexB], arr[indexA]];
         // console.log(arr[indexA].value, arr[indexB].value)
         setArray([...arr]);
     }
@@ -127,18 +129,25 @@ function Chart() {
         const arr = array;
         setReset([...arr]);
         let len = arr.length;
-        for (let i = 0; i < len; i++) {
-            for (let j = 0; j < len; j++) {
-                let indexA = j;
-                let indexB = j + 1;
+        let count = 0
+        for (let i = 0; i < len - 1; i++) {
+            for (let j = 0; j < len - 1; j++) {
 
-                if (arr[j].value >= arr[j + 1].value) {
-
+                if (arr[j].value > arr[j + 1].value) {
+                    // count++;
+                    // console.log(count, len)
+                    console.log(typeof arr[j + 1])
+                    let indexA = j;
+                    let indexB = j + 1;
+                    // active array
                     arr[j].color = "blue"
+                    // comparing array
                     arr[j + 1].color = "orange"
                     arraySwap(arr, indexA, indexB);
+                    // arr[j].color = "red"
                     await sleep(speed);
                 }
+
             }
         }
     }
