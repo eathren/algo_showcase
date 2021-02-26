@@ -15,9 +15,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-// not used yet, used to show which index value is being manipulated
-
-// not used yet, used to show which index value is being manipulated
 
 const useStyles = makeStyles({
   root: {
@@ -183,6 +180,7 @@ function Chart() {
           </Grid>
           {/* {array} */}
           {/* <Grid item xs={12}> */}
+          <br />
           <Typography id="discrete-slider" gutterBottom>
             Columns
           </Typography>
